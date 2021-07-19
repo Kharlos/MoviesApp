@@ -2,15 +2,16 @@ package com.cblanco.moviesapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cblanco.moviesapp.R
 import com.cblanco.moviesapp.data.model.Movie
 import com.cblanco.moviesapp.ui.adapter.viewholders.MoviesViewHolder
 
 class MoviesAdapter(
-    var movies: List<Movie>,
     var adapterInterface: OnMovieAdapterInterface
-) : RecyclerView.Adapter<MoviesViewHolder>() {
+) :  ListAdapter<Movie, MoviesViewHolder>(MovieListDiffCalback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         return MoviesViewHolder(
             LayoutInflater
@@ -20,16 +21,25 @@ class MoviesAdapter(
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        holder.bind(movies[position])
+        val movie = getItem(position)
+        holder.bind(movie)
         holder.cardView.setOnClickListener {
-            movies[position].id?.let { id->
+            movie.id?.let { id->
                 adapterInterface.OnMovieSelected(id)
             }
         }
     }
 
-    override fun getItemCount(): Int = movies.size
+}
 
+    class MovieListDiffCalback : DiffUtil.ItemCallback<Movie>(){
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem == newItem
+    }
 }
 
 interface OnMovieAdapterInterface {

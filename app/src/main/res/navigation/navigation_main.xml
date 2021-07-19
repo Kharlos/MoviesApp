@@ -9,16 +9,20 @@
         android:id="@+id/moviesListFragment"
         android:name="com.cblanco.moviesapp.ui.movieslist.MoviesListFragment"
         android:label="movies_list_fragment"
-        tools:layout="@layout/movies_list_fragment" >
+        tools:layout="@layout/movies_list_fragment">
         <action
             android:id="@+id/action_moviesListFragment_to_movieDetailFragment"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/movieDetailFragment"
+            app:enterAnim="@anim/transition_in_right"
+            app:exitAnim="@anim/transition_out_left"
+            app:popEnterAnim="@anim/transition_in_left"
+            app:popExitAnim="@anim/transition_out_right" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.cblanco.moviesapp.ui.moviedetail.MovieDetailFragment"
         android:label="movie_detail_fragment"
-        tools:layout="@layout/movie_detail_fragment" >
+        tools:layout="@layout/movie_detail_fragment">
         <argument
             android:name="movieId"
             app:argType="integer" />

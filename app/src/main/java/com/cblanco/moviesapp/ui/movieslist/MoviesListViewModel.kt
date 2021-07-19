@@ -17,11 +17,24 @@ class MoviesListViewModel @Inject constructor(private val loadMovies: LoadMovies
     private val _movies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>> = _movies
 
-    fun getPopularMovies(){
+    private val _filters = MutableLiveData<List<Movie>>()
+    var filters: MutableLiveData<List<Movie>> = _filters
+
+    fun getPopularMovies() {
         viewModelScope.launch {
+            _progressBar.value = true
             _movies.value = loadMovies.getPopularMovies()
+            _progressBar.value = false
         }
     }
 
-
+    fun filterByName(query: String) {
+        _movies.value?.let { list ->
+            if (query.isNullOrBlank()) {
+                _filters.value = list
+            } else {
+                _filters.value = list.filter { it.title?.contains(query, true) ?: false }
+            }
+        }
+    }
 }
